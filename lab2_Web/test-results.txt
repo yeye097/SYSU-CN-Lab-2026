@@ -1,0 +1,190 @@
+test_absolute_url_normalization_and_duplicate_headers (test_proxy_server.RequestTests) ... ok
+test_header_deadline (test_proxy_server.RequestTests) ... ok
+test_header_limit_partial_eof_and_empty_connection (test_proxy_server.RequestTests) ... ok
+test_invalid_host_cannot_change_origin_form_path (test_proxy_server.RequestTests) ... ok
+test_invalid_requests_rejected (test_proxy_server.RequestTests) ... ok
+test_origin_form_and_ipv6 (test_proxy_server.RequestTests) ... ok
+test_request_hop_headers_removed_and_end_to_end_preserved (test_proxy_server.RequestTests) ... ok
+test_segmented_header_and_timeout_restored (test_proxy_server.RequestTests) ... ok
+test_unsupported_method_and_scheme (test_proxy_server.RequestTests) ... ok
+test_bad_response_and_size_limits (test_proxy_server.ResponseTests) ... ok
+test_bodyless_statuses (test_proxy_server.ResponseTests) ... ok
+test_reframe_binary_body_and_preserve_duplicate_headers (test_proxy_server.ResponseTests) ... ok
+test_capacity_bound_and_recovery (test_proxy_server.ServerTests) ... 连接容量已满，返回 503：('127.0.0.1', 52636)
+ok
+test_complete_response_and_close (test_proxy_server.ServerTests) ... ok
+test_concurrent_clients_are_not_serialized_or_mixed (test_proxy_server.ServerTests) ... ok
+test_early_disconnect_and_read_timeout (test_proxy_server.ServerTests) ... 请求错误：读取请求超时
+ok
+test_errors_mapped_and_server_survives (test_proxy_server.ServerTests) ... 源站超时：test error
+源站通信或响应错误：test error
+源站通信或响应错误：test error
+请求处理发生内部错误
+Traceback (most recent call last):
+  File "D:\Study\computer_network\lab-2026\lab2_Web\proxy_server.py", line 270, in handle_client
+    response = self.controller.handle(request)
+  File "D:\Study\computer_network\lab-2026\lab2_Web\test_proxy_server.py", line 235, in handle
+    raise errors[request.path]("test error")
+RuntimeError: test error
+请求错误：非法请求行
+请求错误：仅支持 GET 请求
+ok
+test_head_error_has_headers_but_no_body (test_proxy_server.ServerTests) ... 请求错误：仅支持 GET 请求
+ok
+[2026-10-22 10:51:59] [OriginServer] <<< [RESPONSE 200] 返回 200 OK, 正文长度: 504 字节, 版本: v1
+[2026-10-22 10:51:59] [OriginServer] "GET /index.html HTTP/1.1" 200 -
+[2026-10-22 10:51:59] [OriginServer] [CHUNKED RESPONSE] 发送分块传输测试响应
+[2026-10-22 10:51:59] [OriginServer] "GET /chunked HTTP/1.1" 200 -
+[2026-10-22 10:51:59] [OriginServer] [EOF RESPONSE] 发送无 Content-Length、通过关闭连接定界的响应
+[2026-10-22 10:51:59] [OriginServer] "GET /eof HTTP/1.1" 200 -
+test_real_c_origin_client_three_response_boundaries (test_proxy_server.ServerTests) ... ok
+test_rejected_body_is_drained_before_close (test_proxy_server.ServerTests) ... 请求错误：不支持带请求体的 GET 或请求流水线
+ok
+test_shutdown_unblocks_idle_connection (test_proxy_server.ServerTests) ... 请求错误：读取请求超时
+ok
+test_304_and_validator_priority (test_cache.CacheTests)
+验证 ETag 优先、Last-Modified 备用，以及 304 复用正文并刷新有效期。 ... ok
+test_bypass_and_response_filter (test_cache.CacheTests)
+检查请求绕过规则，以及 Set-Cookie/Vary 响应不进入缓存。 ... ok
+test_concurrent_reads_and_writes (test_cache.CacheTests)
+多个线程同时读写，最终不能突破容量或破坏字节统计。 ... ok
+test_freshness_and_age (test_cache.CacheTests)
+检查新鲜期优先级，以及上游 Age 加本地驻留时间。 ... ok
+test_hit_expiry_and_replacement (test_cache.CacheTests)
+首次访问保存 v1，新鲜时命中；过期后获取并保存 v2。 ... ok
+test_lru_and_capacity (test_cache.CacheTests)
+检查 LRU 淘汰，以及删除和清空后的容量统计。 ... ok
+test_no_cache_no_store_private (test_cache.CacheTests)
+no-cache 可保存但需验证；no-store 和 private 不能保存。 ... ok
+test_replacement_oversize_and_snapshot (test_cache.CacheTests)
+检查快照隔离、同键替换计量和超大条目的拒绝保存。 ... ok
+test_source_failure_does_not_return_stale (test_cache.CacheTests)
+过期验证遇到超时应抛异常，不能用旧正文代替失败。 ... ok
+test_01_delimitation_content_length (test_origin_client.TestOriginClient)
+
+>>> [定界测试 1] Content-Length 定长定界验证
+[2026-10-22 10:52:01] [OriginServer] <<< [RESPONSE 200] 返回 200 OK, 正文长度: 504 字节, 版本: v1
+[2026-10-22 10:52:01] [OriginServer] "GET /index.html HTTP/1.1" 200 -
+定界方式一：Content-Length 定长定界测试 ... ok
+test_02_delimitation_chunked (test_origin_client.TestOriginClient)
+    - 状态码: 200 OK
+    - Content-Length 首部: 504
+    - 实际接收 Body 长度: 504 字节
+
+>>> [定界测试 2] Transfer-Encoding: chunked 分块传输解码验证
+[2026-10-22 10:52:01] [OriginServer] [CHUNKED RESPONSE] 发送分块传输测试响应
+[2026-10-22 10:52:01] [OriginServer] "GET /chunked HTTP/1.1" 200 -
+定界方式二：分块传输编码 (Transfer-Encoding: chunked) 解码定界测试 ... ok
+test_03_delimitation_connection_close_eof (test_origin_client.TestOriginClient)
+    - 状态码: 200 OK
+    - 解码后 Body 长度: 44 字节
+    - 解码后正文内容: Chunk1: Hello Chunk2: Network Chunk3: World!
+
+>>> [定界测试 3] 连接关闭定界 (EOF) 验证
+[2026-10-22 10:52:01] [OriginServer] [EOF RESPONSE] 发送无 Content-Length、通过关闭连接定界的响应
+[2026-10-22 10:52:01] [OriginServer] "GET /eof HTTP/1.1" 200 -
+定界方式三：连接关闭定界 (Connection: close 读到 EOF) 测试 ... ok
+test_04_conditional_request_304 (test_origin_client.TestOriginClient)
+    - 状态码: 200 OK
+    - 实际接收 Body: Response delimited strictly by connection close (EOF).
+
+>>> [条件请求测试] 304 Not Modified 验证
+[2026-10-22 10:52:01] [OriginServer] <<< [RESPONSE 200] 返回 200 OK, 正文长度: 504 字节, 版本: v1
+[2026-10-22 10:52:01] [OriginServer] "GET /index.html HTTP/1.1" 200 -
+[2026-10-22 10:52:01] [OriginServer] [CONDITIONAL MATCH] If-Modified-Since 命中: Thu, 22 Oct 2026 01:52:01 GMT >= Thu, 22 Oct 2026 01:52:01 GMT
+[2026-10-22 10:52:01] [OriginServer] <<< [RESPONSE 304] 内容未改变，返回 304 Not Modified
+[2026-10-22 10:52:01] [OriginServer] "GET /index.html HTTP/1.1" 304 -
+条件请求验证：携带 If-Modified-Since，未修改时返回 304 Not Modified ... ok
+test_05_update_after_expiry_200 (test_origin_client.TestOriginClient)
+    - 条件请求返回状态码: 304 Not Modified
+    - 正文长度: 0 (依据规范 304 必须无正文)
+
+>>> [内容更新测试] 源站更新后拉取新页面 200 OK 验证
+[2026-10-22 10:52:01] [OriginServer] >>> [RESOURCE UPDATED] 触发源站更新: 版本升级为 v2, 新 Last-Modified: Thu, 22 Oct 2026 02:52:01 GMT
+[2026-10-22 10:52:01] [OriginServer] "GET /update HTTP/1.1" 200 -
+[2026-10-22 10:52:01] [OriginServer] [CONDITIONAL MISS] If-Modified-Since 过期: 客户端 Thu, 22 Oct 2026 01:52:01 GMT < 源站 Thu, 22 Oct 2026 02:52:01 GMT
+[2026-10-22 10:52:01] [OriginServer] <<< [RESPONSE 200] 返回 200 OK, 正文长度: 563 字节, 版本: v2
+[2026-10-22 10:52:01] [OriginServer] "GET /index.html HTTP/1.1" 200 -
+内容变化后更新验证：源站更新后，条件请求返回新 200 OK 与新正文 ... ok
+test_06_timeout_handling (test_origin_client.TestOriginClient)
+    - 返回状态码: 200 (期望 200)
+    - 新正文包含更新标记: True
+
+>>> [异常测试 1] 源站慢响应超时测试
+[2026-10-22 10:52:01] [OriginServer] [SIMULATE DELAY] 模拟源站慢响应，睡眠等待 2.0 秒...
+超时处理测试：请求延迟接口，验证准确触发 OriginTimeoutError 及 504 响应 ... 源站 127.0.0.1:18000 通信超时 (0.5s)
+源站 127.0.0.1:18000 通信超时 (0.5s)
+ok
+test_07_origin_disconnect_connection_refused (test_origin_client.TestOriginClient)
+    - 准确抛出 OriginTimeoutError，耗时: 0.51s
+    - safe_fetch 合成响应: 504 Gateway Timeout
+
+>>> [异常测试 2] 目标端口未开放/连接拒绝测试
+[2026-10-22 10:52:03] [OriginServer] "GET /delay?sec=2 HTTP/1.1" 200 -
+[2026-10-22 10:52:03] [OriginServer] [CLIENT DISCONNECTED] 客户端在延迟响应期间已断开连接
+[2026-10-22 10:52:03] [OriginServer] [SIMULATE DELAY] 模拟源站慢响应，睡眠等待 2.0 秒...
+源站异常断开 / 连接失败测试：连接无效端口，验证触发 OriginConnectionError 及 502 响应 ... 无法连接源站 127.0.0.1:59999: [WinError 10061] 由于目标计算机积极拒绝，无法连接。
+    - 准确抛出 OriginConnectionError
+[2026-10-22 10:52:05] [OriginServer] "GET /delay?sec=2 HTTP/1.1" 200 -
+[2026-10-22 10:52:05] [OriginServer] [CLIENT DISCONNECTED] 客户端在延迟响应期间已断开连接
+无法连接源站 127.0.0.1:59999: [WinError 10061] 由于目标计算机积极拒绝，无法连接。
+ok
+test_08_segmented_content_length_response (test_origin_client.TestOriginClientRobustness)
+响应经多次 TCP 报文分帧到达时，Content-Length 定界仍能完整读取 ... ok
+test_09_chunked_with_trailer (test_origin_client.TestOriginClientRobustness)
+分块传输携带 Trailer 首部时，解码应正确剥离 Trailer 并还原完整正文 ... ok
+test_10_head_request_no_body (test_origin_client.TestOriginClientRobustness)
+HEAD 请求：源站返回带 Content-Length 的首部但无正文，客户端应返回空正文 ... ok
+test_11_duplicate_response_headers_preserved (test_origin_client.TestOriginClientRobustness)
+响应重复首部应按 list[tuple[str, str]] 完整保留，且查找大小写无关 ... ok
+test_12_outgoing_request_construction (test_origin_client.TestOriginClientRobustness)
+发往源站的请求：自动补全 Host、强制 Connection: close、条件首部去重覆盖 ... ok
+test_capture_scene_3_always_revalidates (test_integration.IntegrationTests) ... ok
+test_client_conditions_and_cookie_bypass (test_integration.IntegrationTests) ... ok
+test_concurrent_misses_and_hits (test_integration.IntegrationTests) ... ok
+test_miss_hit_expired_304_and_updated_200 (test_integration.IntegrationTests) ... ok
+test_origin_etag_takes_priority_over_modified_since (test_integration.IntegrationTests) ... ok
+test_three_body_boundaries (test_integration.IntegrationTests) ... ok
+test_timeout_is_504_and_server_recovers (test_integration.IntegrationTests) ... 源站 127.0.0.1:50062 通信超时 (0.1s)
+源站超时：连接或读取源站超时: timed out
+ok
+test_truncated_response_is_502_and_never_cached (test_integration.IntegrationTests) ... 源站通信或响应错误：源站提前关闭连接，正文不足 Content-Length
+源站通信或响应错误：源站提前关闭连接，正文不足 Content-Length
+ok
+test_ambiguous_or_invalid_framing_rejected (test_integration.OriginBoundaryTests) ... ok
+test_config_reaches_origin_and_cache (test_integration.OriginBoundaryTests) ... ok
+test_content_length_does_not_include_surplus_bytes (test_integration.OriginBoundaryTests) ... ok
+test_invalid_status_and_header_rejected (test_integration.OriginBoundaryTests) ... ok
+test_large_delta_seconds_do_not_raise_internal_errors (test_integration.OriginBoundaryTests) ... ok
+test_receive_limits_for_all_body_boundaries (test_integration.OriginBoundaryTests) ... ok
+test_truncated_content_length_rejected (test_integration.OriginBoundaryTests) ... ok
+
+----------------------------------------------------------------------
+Ran 57 tests in 15.069s
+
+OK
+    - safe_fetch 合成响应: 502 Bad Gateway
+
+>>> [健壮性测试 1] 响应分帧到达（首部与正文分多次 recv）
+    - 状态码: 200 OK
+    - 声明 Content-Length: 49, 实收: 49 字节
+
+>>> [健壮性测试 2] 分块传输 Trailer 首部处理
+    - 解码后正文: Trailer-Test-
+
+>>> [健壮性测试 3] HEAD 请求无正文处理
+    - 状态码: 200, 正文长度: 0
+
+>>> [健壮性测试 4] 响应重复首部保留
+    - X-Multi 全部值: ['first', 'second']
+
+>>> [健壮性测试 5] 请求构造（Host / Connection / 条件首部去重）
+    - 源站实际收到的请求首部:
+        User-Agent: test-agent
+        If-Modified-Since: new-timestamp
+        Host: 127.0.0.1:18001
+        Connection: close
+
+【场景 3：过期验证，内容未变 (304 Not Modified)】
+[*] 强制验证缓存 (Cache-Control: no-cache)...
+[+] 客户端收到响应: HTTP/1.1 200 OK
